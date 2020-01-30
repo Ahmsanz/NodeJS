@@ -1,11 +1,12 @@
+var http = require ('http');
 
-
-
-var fs = require('fs');
-
-
-fs.readFile('readme.txt', 'utf8', (err, data)=>{
-  fs.writeFile('writeMe.txt', data, (err)=>{console.log(err);});
+var server = http.createServer(function(req, res){
+  res.writeHead (200, {'Content-Type': 'text/plain'})
+  res.end('Hey ninjas!');
 });
 
-//both methods, when asynchronous, need a third argument that must be a function. Otherwise it won't work.
+
+server.listen(3000, '127.0.0.1');
+console.log('listening to port 3000');
+
+//server set up
