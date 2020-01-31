@@ -4,7 +4,6 @@ const app = express();
 
 const todoController = require('./controllers/todo-controller')
 
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 
