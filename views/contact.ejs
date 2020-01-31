@@ -5,12 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  
+  <link rel="stylesheet" href="/assets/styles.css">
+
 </head>
 <body>
  <!-- the sintax has been updated and now it needs to be with parenthesis and quotes -->
   <%- include ('partials/nav') -%>
   <h1>Reach us!</h1>
   <p>Contact some pro!</p>
+
+  <div class="form">
+  <form id='contact-form' method="POST" action="/contact">
+    <label for="who">Who are you reaching for?</label>
+    <input type="text" name="who" value="<%= qs.person %>">
+    <label for="department">In which department?</label>
+    <input type="text" name="department" value="<%= qs.dept %>">
+    <label for="email">Give us your email to reach you back.</label>
+    <input type="text" name="email">
+
+    <input type="submit">
+  </form>
+  </div>
 </body>
 </html>
