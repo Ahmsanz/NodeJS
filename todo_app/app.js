@@ -4,8 +4,6 @@ const app = express();
 
 const todoController = require('./controllers/todo-controller')
 
-const mongoose = require('mongoose');
-
 
 //set up template engine
 

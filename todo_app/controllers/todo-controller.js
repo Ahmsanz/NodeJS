@@ -1,6 +1,24 @@
 const bodyParser = require('body-parser');
 
-let data = [{item: 'get milk'}, {item: 'walk the doggies'}, {item: 'kick some ass in Aikido'}];
+const mongoose = require('mongoose');
+
+const keys = require('../keys/app_keys.js')
+
+//connect to the DB
+
+mongoose.connect(keys.mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
+
+//sechema for data
+
+let todoSchema = new mongoose.Schema({
+  item: {
+    type: String
+  }
+});
+
+let Todo = mongoose.model('Todo', todoSchema);
+
+
 
 let urlencodedParser = bodyParser.urlencoded({extended: false});
 
@@ -9,19 +27,31 @@ let urlencodedParser = bodyParser.urlencoded({extended: false});
 module.exports = function(app){
 
   app.get('/todo', (req, res) => {
-    res.render('todo', {todos: data});
+    //get data from mongoDB and pass it to the view
+
+    Todo.find({}, (err, data) => {
+      if (err) throw err;
+      res.render('todo', {todos: data});
+    })
+
   });
 
   app.post('/todo', urlencodedParser, (req, res) => {
-
-    data.push(req.body);
-    res.json(data);
+      //get data from the view and add it to MongoDB
+      let newTodo = Todo(req.body).save((err, data) => {
+        if (err) throw err;
+        res.json(data);
+      })
 
   });
 
   app.delete('/todo/:item', (req, res) => {
-    data = data.filter(todo => todo.item.replace(/ /g, '-') !== req.params.item);
-    res.json(data);
+    //delete requested item from MongoDB
+    Todo.find({item: req.params.item.replace(/\-/g, " ")}).remove((err, data) => {
+      if (err) throw err;
+      res.json(data);
+    })
+
   });
 
 };
